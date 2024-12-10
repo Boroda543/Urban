@@ -1,0 +1,7 @@
+my_string=input("Введите строки с произвольным текстом: ")
+print(f"Количество символов в введенном тексте:{len(my_string)}")
+print(f"Верхний регистр:{my_string.upper()}")
+print(f"Нижний регистр:{my_string}")
+print(f"Строка без пробелов:{my_string}".replace(" ",""))
+print(f"Первый символ строки:{my_string[0]}")
+print(f"Последний символ строки:{my_string[-1]}")
