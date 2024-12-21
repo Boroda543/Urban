@@ -7,7 +7,7 @@ from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.utils import executor
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
-API_TOKEN = '7853278840:AAG3f1lNWvoGKoYPmUxpn1uKTeOiyZkUe6Y'
+API_TOKEN = 'YOUR_API_TOKEN'
 
 
 logging.basicConfig(level=logging.INFO)
