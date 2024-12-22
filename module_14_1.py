@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect('not_telegram.bd')
+conn = sqlite3.connect('not_telegram.db')
 cursor = conn.cursor()
 
 cursor.execute('''
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS Users (
 )
 ''')
 
-users_data = [
+users = [
     ('User1', 'example1@gmail.com', 10, 1000),
     ('User2', 'example2@gmail.com', 20, 1000),
     ('User3', 'example3@gmail.com', 30, 1000),
@@ -26,7 +26,7 @@ users_data = [
     ('User10', 'example10@gmail.com', 100, 1000)
 ]
 
-cursor.executemany('INSERT INTO Users (username, email, age, balance) VALUES (?, ?, ?, ?)', users_data)
+cursor.executemany('INSERT INTO Users (username, email, age, balance) VALUES (?, ?, ?, ?)', users)
 
 cursor.execute('UPDATE Users SET balance = 500 WHERE id % 2 = 1')
 
