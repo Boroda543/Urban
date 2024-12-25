@@ -1,23 +1,21 @@
 import logging
+
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher.filters.state import StatesGroup, State
-from aiogram.utils import executor
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.utils import executor
+
 from crud_functions import initiate_db, get_all_products
 
-API_TOKEN = 'YOUR_API_TOKEN'
-
+API_TOKEN = '7853278840:AAG3f1lNWvoGKoYPmUxpn1uKTeOiyZkUe6Y'
 
 logging.basicConfig(level=logging.INFO)
-
 
 bot = Bot(token=API_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
-
 
 
 class UserState(StatesGroup):
@@ -29,7 +27,6 @@ class UserState(StatesGroup):
 main_menu_kb = ReplyKeyboardMarkup(resize_keyboard=True)
 main_menu_kb.add(KeyboardButton('Рассчитать'), KeyboardButton('Информация'), KeyboardButton('Купить'))
 
-
 buying_menu_kb = InlineKeyboardMarkup()
 buying_menu_kb.add(
     InlineKeyboardButton("Product1", callback_data="product_buying"),
@@ -37,6 +34,8 @@ buying_menu_kb.add(
     InlineKeyboardButton("Product3", callback_data="product_buying"),
     InlineKeyboardButton("Product4", callback_data="product_buying"),
 )
+
+initiate_db()
 
 
 @dp.message_handler(Command('start'))
@@ -48,10 +47,14 @@ async def start(message: types.Message):
 async def get_buying_list(message: types.Message):
     products = get_all_products()
 
-    for title, description, price in products:
+    for product in products:
+        id, title, description, price = product
         await message.answer(f"Название: {title} | Описание: {description} | Цена: {price}")
 
-    await message.answer("Выберите продукт для покупки:", reply_markup=buying_menu_kb)
+    await bot.send_photo(message.chat.id, 'image_url')
+
+    await message.answer('Выберите продукт для покупки:', reply_markup=buying_menu_kb)
+
 
 @dp.callback_query_handler(lambda call: call.data == "product_buying")
 async def send_confirm_message(call: types.CallbackQuery):
@@ -60,5 +63,4 @@ async def send_confirm_message(call: types.CallbackQuery):
 
 
 if __name__ == '__main__':
-    initiate_db()
     executor.start_polling(dp, skip_updates=True)
